@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public class Node : MonoBehaviour
+public class Node
 {
-    Vector2 coordinates;
-    float zSpace;
-    bool passable;
+    public Vector3 coordinates;
+    public float zSpace;
+    public bool passable;
+    public TileBase tile;
+
+    public Node(Vector3 vector3) {
+        coordinates = vector3;
+    }
 
     // Start is called before the first frame update
     void Start()
