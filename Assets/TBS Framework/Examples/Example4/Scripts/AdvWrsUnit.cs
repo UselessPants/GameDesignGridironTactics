@@ -47,6 +47,13 @@ namespace TbsFramework.Example4
 
         protected override void OnMoveFinished()
         {
+            Vector3 searchOffset = new Vector3(0,0,0.1f);
+            Debug.Log(transform.position + searchOffset);
+            Debug.Log(GameObject.FindGameObjectWithTag("Football").transform.position);
+            if (transform.position + searchOffset == GameObject.FindGameObjectWithTag("Football").transform.position)
+            {
+                Debug.Log("Collide");
+            }
             GetComponent<SpriteRenderer>().sortingOrder -= 10;
             transform.Find("Marker").GetComponent<SpriteRenderer>().sortingOrder -= 10;
             transform.Find("Mask").GetComponent<SpriteRenderer>().sortingOrder -= 10;
