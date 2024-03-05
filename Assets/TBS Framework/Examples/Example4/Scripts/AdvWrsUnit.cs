@@ -13,6 +13,22 @@ namespace TbsFramework.Example4
         public Vector3 Offset;
 
         public bool isStructure;
+        
+        SpriteRenderer sprite;
+   
+    	void Start()
+    	{
+        	sprite = GetComponent<SpriteRenderer>();
+    	}
+    
+    	void Update()
+    	{
+       		if(Input.GetKeyDown(KeyCode.C))
+        	{            
+            	// Change the 'color' property of the 'Sprite Renderer'
+           	 sprite.color = new Color (1, 0, 0, 1); 
+        	}
+    	}
 
         public override void Initialize()
         {
@@ -52,7 +68,8 @@ namespace TbsFramework.Example4
             Debug.Log(GameObject.FindGameObjectWithTag("Football").transform.position);
             if (transform.position + searchOffset == GameObject.FindGameObjectWithTag("Football").transform.position)
             {
-                Debug.Log("Collide");
+                Destroy (GameObject.FindWithTag("Football"));
+                
             }
             GetComponent<SpriteRenderer>().sortingOrder -= 10;
             transform.Find("Marker").GetComponent<SpriteRenderer>().sortingOrder -= 10;
