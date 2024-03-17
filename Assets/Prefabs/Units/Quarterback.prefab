@@ -524,11 +524,11 @@ MonoBehaviour:
   UnitHighlighterAggregator: {fileID: 3782955785855540087}
   Obstructable: 1
   cell: {fileID: 0}
-  HitPoints: 60
+  HitPoints: 45
   AttackRange: 1
   AttackFactor: 15
   DefenceFactor: 6
-  movementPoints: 3
+  movementPoints: 5
   MovementAnimationSpeed: 7.5
   actionPoints: 1
   PlayerNumber: 0
@@ -536,8 +536,6 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: -0.1}
   isStructure: 0
   isHoldingBall: 0
-  ballIndicator: {fileID: 7635616647082506317, guid: 682a6e28e319d8645afa77cd7659529d,
-    type: 3}
 --- !u!114 &2225642486709642786
 MonoBehaviour:
   m_ObjectHideFlags: 0
