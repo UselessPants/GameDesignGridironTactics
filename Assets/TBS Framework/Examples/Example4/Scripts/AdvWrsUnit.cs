@@ -4,22 +4,28 @@ using TbsFramework.Cells;
 using TbsFramework.Units;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace TbsFramework.Example4
 {
+   
     public class AdvWrsUnit : Unit
     {
         public string UnitName;
         public Vector3 Offset;
 
         public bool isStructure;
-        
+
+        public bool isHoldingBall;
+
+        public GameObject ballIndicator;
+
         SpriteRenderer sprite;
    
     	void Start()
     	{
         	sprite = GetComponent<SpriteRenderer>();
-    	}
+        }
     
     	void Update()
     	{
@@ -28,6 +34,11 @@ namespace TbsFramework.Example4
             	// Change the 'color' property of the 'Sprite Renderer'
            	 sprite.color = new Color (1, 0, 0, 1); 
         	}
+
+            if (isHoldingBall) 
+            {
+                Instantiate(ballIndicator, transform.position, Quaternion.identity);
+            }
     	}
 
         public override void Initialize()
@@ -42,6 +53,11 @@ namespace TbsFramework.Example4
 
         protected override int Defend(Unit other, int damage)
         {
+            if (isHoldingBall) 
+            {
+                isHoldingBall = false;
+                other.GetComponent<AdvWrsUnit>().isHoldingBall = true;
+            }
             return damage - (Cell as AdvWrsSquare).DefenceBoost;
         }
 
@@ -64,12 +80,22 @@ namespace TbsFramework.Example4
         protected override void OnMoveFinished()
         {
             Vector3 searchOffset = new Vector3(0,0,0.1f);
-            Debug.Log(transform.position + searchOffset);
-            Debug.Log(GameObject.FindGameObjectWithTag("Football").transform.position);
-            if (transform.position + searchOffset == GameObject.FindGameObjectWithTag("Football").transform.position)
+            if (GameObject.FindGameObjectsWithTag("Football").Length > 0)
             {
-                Destroy (GameObject.FindWithTag("Football"));
-                
+                if (transform.position + searchOffset == GameObject.FindGameObjectWithTag("Football").transform.position)
+                {
+                    Destroy(GameObject.FindWithTag("Football"));
+                    isHoldingBall = true;
+
+                }
+            }
+            if ((transform.position + searchOffset).x >= 133 && isHoldingBall == true)
+            {
+                SceneManager.LoadScene(sceneName: "Player1Win");
+            }
+            if ((transform.position + searchOffset).x <= 7 && isHoldingBall == true)
+            {
+                SceneManager.LoadScene(sceneName: "Player2Win");
             }
             GetComponent<SpriteRenderer>().sortingOrder -= 10;
             transform.Find("Marker").GetComponent<SpriteRenderer>().sortingOrder -= 10;
