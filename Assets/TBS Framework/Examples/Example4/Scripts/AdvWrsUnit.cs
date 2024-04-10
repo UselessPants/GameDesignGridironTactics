@@ -18,9 +18,10 @@ namespace TbsFramework.Example4
 
         public bool isHoldingBall;
 
-        public GameObject ballIndicator;
 
         SpriteRenderer sprite;
+        
+        public GameObject ballIndicator;
    
     	void Start()
     	{
@@ -34,11 +35,6 @@ namespace TbsFramework.Example4
             	// Change the 'color' property of the 'Sprite Renderer'
            	 sprite.color = new Color (1, 0, 0, 1); 
         	}
-
-            if (isHoldingBall) 
-            {
-                Instantiate(ballIndicator, transform.position, Quaternion.identity);
-            }
     	}
 
         public override void Initialize()
@@ -56,7 +52,9 @@ namespace TbsFramework.Example4
             if (isHoldingBall) 
             {
                 isHoldingBall = false;
+                transform.Find("Indicator").GetComponent<SpriteRenderer>().enabled = false;
                 other.GetComponent<AdvWrsUnit>().isHoldingBall = true;
+                other.transform.Find("Indicator").GetComponent<SpriteRenderer>().enabled = true;
             }
             return damage - (Cell as AdvWrsSquare).DefenceBoost;
         }
@@ -80,13 +78,14 @@ namespace TbsFramework.Example4
         protected override void OnMoveFinished()
         {
             Vector3 searchOffset = new Vector3(0,0,0.1f);
+            
             if (GameObject.FindGameObjectsWithTag("Football").Length > 0)
             {
                 if (transform.position + searchOffset == GameObject.FindGameObjectWithTag("Football").transform.position)
                 {
                     Destroy(GameObject.FindWithTag("Football"));
                     isHoldingBall = true;
-
+                    transform.Find("Indicator").GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
             if ((transform.position + searchOffset).x >= 133 && isHoldingBall == true)
@@ -96,6 +95,10 @@ namespace TbsFramework.Example4
             if ((transform.position + searchOffset).x <= 7 && isHoldingBall == true)
             {
                 SceneManager.LoadScene(sceneName: "Player2Win");
+            }
+            if (isHoldingBall)
+            {
+            	transform.Find("Indicator").GetComponent<SpriteRenderer>().enabled = true;
             }
             GetComponent<SpriteRenderer>().sortingOrder -= 10;
             transform.Find("Marker").GetComponent<SpriteRenderer>().sortingOrder -= 10;
